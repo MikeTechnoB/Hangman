@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #display {
+        display: flex;
+        gap: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      Guess Day
+      <div id="display" />
+    </header>
+    <script type="module" src="./src/App.jsx"></script>
+
+    <ul>
+      <button>A</button>
+      <button>B</button>
+      <button>C</button>
+      <button>D</button>
+      <button>E</button>
+    </ul>
+  </body>
+  <script>
+    let word = "BADA";
+    let wordContainer = document.querySelector("#display");
+    word.split("").forEach((letter) => {
+      let box = document.createElement("div");
+      box.style.width = "50px";
+      box.style.height = "50px";
+      box.style.border = "2px solid black";
+      wordContainer.appendChild(box);
+    });
+    let buttons = document.querySelectorAll("button");
+    let inputs = document.querySelectorAll("input");
+    for (b of buttons) {
+      b.addEventListener("click", (event) => {
+        let keyPad = event.target.innerText;
+        console.log(word.includes(keyPad));
+        if (word.includes(String(keyPad))) {
+          console.log(String(keyPad) + " included in the word");
+          inputs[word.indexOf(String(keyPad))].value = String(keyPad);
+        } else {
+          console.log(String(keyPad) + " not included in the word");
+        }
+      });
+    }
+  </script>
+</html>

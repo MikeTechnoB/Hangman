@@ -1,54 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
+  <style>
+    body header {
+      font-family: "Press Start 2P", cursive;
+    }
+
+    header {
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+
+    #display {
+      text-align: center;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 28px;
+      margin-bottom: 30px;
+    }
+
+    span {
+      display: inline-block;
+      border-bottom: 3px solid black;
+      margin: 0 2px;
+      width: 30px;
+      height: 30px;
+      gap: 5px;
+    }
+
+    button {
+      width: 30px;
+      margin: 5px;
+    }
+  </style>
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      #display {
-        display: flex;
-        gap: 5px;
-      }
-    </style>
+    <title>Hangman</title>
   </head>
+  <header>HANGMAN</header>
   <body>
-    <header>
-      Guess Day
-      <div id="display" />
-    </header>
-    <script type="module" src="./src/App.jsx"></script>
+    <div id="display"></div>
+    <ul id="buttons"></ul>
 
-    <ul>
-      <button>A</button>
-      <button>B</button>
-      <button>C</button>
-      <button>D</button>
-      <button>E</button>
-    </ul>
+    <div id="life"></div>
   </body>
   <script>
-    let word = "BADA";
-    let wordContainer = document.querySelector("#display");
-    word.split("").forEach((letter) => {
-      let box = document.createElement("div");
-      box.style.width = "50px";
-      box.style.height = "50px";
-      box.style.border = "2px solid black";
-      wordContainer.appendChild(box);
+    let display = document.querySelector("#display");
+    let life = document.querySelector("#life");
+    let buttonList = document.querySelector("#buttons");
+    let lifes = 5;
+    let wordOfTheDay = "AURORA";
+    let allKeyboardLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    wordOfTheDay.split("").forEach((letter) => {
+      const displayLetter = document.createElement("span");
+      displayLetter.textContent = "";
+      display.appendChild(displayLetter);
     });
-    let buttons = document.querySelectorAll("button");
-    let inputs = document.querySelectorAll("input");
-    for (b of buttons) {
-      b.addEventListener("click", (event) => {
-        let keyPad = event.target.innerText;
-        console.log(word.includes(keyPad));
-        if (word.includes(String(keyPad))) {
-          console.log(String(keyPad) + " included in the word");
-          inputs[word.indexOf(String(keyPad))].value = String(keyPad);
+
+    let letterBoxes = document.querySelectorAll("span");
+    life.textContent = "Guesses Left: " + lifes;
+
+    allKeyboardLetters.split("").forEach((letter) => {
+      const displayButton = document.createElement("button");
+      displayButton.textContent = letter;
+      displayButton.addEventListener("click", (event) => {
+        if (wordOfTheDay.includes(event.target.textContent)) {
+          for (let i = 0; i < wordOfTheDay.length; i++) {
+            if (wordOfTheDay[i] === event.target.textContent) {
+              letterBoxes[i].textContent = event.target.textContent;
+            }
+          }
         } else {
-          console.log(String(keyPad) + " not included in the word");
+          lifes--;
+          life.textContent = "Guesses Left: " + lifes;
         }
+
+        event.target.disabled = true;
+
+        if ([...letterBoxes].every((span) => span.textContent !== "")) {
+          setTimeout(() => {
+            alert("You Won! Great Job");
+          }, 0);
+
+          return;
+        }
+
+        if (lifes === 0) {
+          life.textContent = "Guesses Left: " + lifes;
+
+          setTimeout(() => {
+            alert("You lost! The word was AURORA");
+          }, 0);
+
+          lifes = 5;
+          life.textContent = "Guesses Left: " + lifes;
+          letterBoxes.forEach((box) => {
+            box.textContent = "";
+          });
+          document.querySelectorAll("button").forEach((button) => {
+            button.disabled = false;
+          });
+          return;
+        }
+        life.textContent = "Guesses Left: " + lifes;
       });
-    }
+
+      buttonList.appendChild(displayButton);
+    });
   </script>
 </html>

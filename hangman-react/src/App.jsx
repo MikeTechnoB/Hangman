@@ -36,6 +36,10 @@ function App() {
   const [lives, setLives] = useState(5);
   const [guessedLetters, setGuessedLetters] = useState([]);
 
+  useEffect(() => {
+    console.log();
+  }, []);
+
   const handleLetterClick = (letter) => {
     console.log("Clicked:", letter);
     setGuessedLetters([...guessedLetters, letter]);
@@ -75,28 +79,36 @@ function App() {
   }, [guessedLetters, lives]);
 
   return (
-    <main>
-      <div className="WOD">
-        {WORDOFTHEDAY.split("").map((letterOfWORD) => (
-          <div className="lettersWORD">
-            {guessedLetters.includes(letterOfWORD) ? letterOfWORD : ""}
-          </div>
-        ))}
-      </div>
+    <div className="wrapper">
+      <header>
+        <img src="src/assets/hangman.png" alt="" />
+        HANGMAN
+      </header>
+      <div className="wordhint">()</div>
+      <main>
+        <div className="WOD">
+          {WORDOFTHEDAY.split("").map((letterOfWORD) => (
+            <div className="lettersWORD">
+              {guessedLetters.includes(letterOfWORD) ? letterOfWORD : ""}
+            </div>
+          ))}
+        </div>
+        <div className="button-container">
+          {ALPHABET.map((letter) => (
+            <button
+              id={letter}
+              className="button-letters"
+              onClick={() => handleLetterClick(letter)}
+              disabled={guessedLetters.includes(letter)}
+            >
+              {letter}
+            </button>
+          ))}
+        </div>
 
-      {ALPHABET.map((letter) => (
-        <button
-          id={letter}
-          className="button-letters"
-          onClick={() => handleLetterClick(letter)}
-          disabled={guessedLetters.includes(letter)}
-        >
-          {letter}
-        </button>
-      ))}
-
-      <div className="liveleft">Live Left: {lives}</div>
-    </main>
+        <div className="liveleft">Live Left: {lives}</div>
+      </main>
+    </div>
   );
 }
 export default App;

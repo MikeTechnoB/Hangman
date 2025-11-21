@@ -37,8 +37,15 @@ function App() {
   const [lives, setLives] = useState(5);
   const [guessedLetters, setGuessedLetters] = useState([]);
 
+  async function fetchWordOfTheDay() {
+    const wordRes = await fetch("WORDOFTHEDAY_URL");
+    console.log(wordRes);
+    const wordJson = await wordRes.json();
+    console.log(wordJson);
+  }
+
   useEffect(() => {
-    console.log();
+    fetchWordOfTheDay();
   }, []);
 
   const handleLetterClick = (letter) => {

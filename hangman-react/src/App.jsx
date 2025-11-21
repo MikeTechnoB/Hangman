@@ -31,6 +31,7 @@ const ALPHABET = [
 ];
 
 const WORDOFTHEDAY = "ABOUT";
+const WORDOFTHEDAY_URL = "https://word-of-the-day.de/api/random";
 
 function App() {
   const [lives, setLives] = useState(5);

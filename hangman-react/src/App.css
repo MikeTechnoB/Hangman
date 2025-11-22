@@ -34,6 +34,12 @@ header img {
   margin-bottom: 4rem;
 }
 
+.wordhint{
+  font-size: 1.9rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
 .lettersWORD {
   border-bottom: 2px solid black;
   width: 80px;
